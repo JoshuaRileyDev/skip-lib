@@ -8,13 +8,35 @@
 
 #if SKIP
 
-extension Bool: CustomStringConvertible {
-    public static func random() -> Bool { fatalError() }
-    public static func random(using gen: inout RandomNumberGenerator) -> Bool { fatalError() }
-    public var description: String { return "" }
+import androidx.compose.runtime.mutableStateOf
 
-    @available(*, unavailable)
-    public func toggle() {
+extension Bool: CustomStringConvertible {
+    public static func random() -> Bool {
+        // Generate a random Boolean value
+        return SecureRandom().nextBoolean()
+    }
+    public static func random(using gen: inout RandomNumberGenerator) -> Bool {
+        return SecureRandom().nextBoolean()
+    }
+    public var description: String {
+        return toString()
+    }
+
+    public mutating func toggle() {
+        // Since Booleans are immutable in Kotlin, we use a MutableBoolean class to handle toggling.
+        // You can call this method on a MutableBoolean instance
+        value = !value
+    }
+}
+
+// Wrapper class for mutable Boolean with toggle functionality
+class MutableBoolean {
+    func toggle() {
+        value = !value
+    }
+
+    override func toString() {
+        return value.toString()
     }
 }
 
